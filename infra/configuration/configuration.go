@@ -27,12 +27,16 @@ func NewConfiguration(
 	viper.AutomaticEnv()
 
 	if err := viper.ReadInConfig(); err != nil {
+		logger.Error("failed to load environment variable", err)
+
 		return nil, fmt.Errorf("failed to load environment variable: %w", err)
 	}
 
 	var config domain.Config
 
 	if err := viper.Unmarshal(&config); err != nil {
+		logger.Error("failed to unmarshal environment variable", err)
+
 		return nil, fmt.Errorf("failed to unmarshal environment variable: %w", err)
 	}
 

@@ -52,7 +52,7 @@ func (l *Logger) field(field domain.Field) zap.Field {
 }
 
 func (l *Logger) Info(message string, fields ...domain.Field) {
-	zapfields := lo.Map[domain.Field, zap.Field](fields, func(field domain.Field, _ int) zap.Field {
+	zapfields := lo.Map(fields, func(field domain.Field, _ int) zap.Field {
 		return l.field(field)
 	})
 
