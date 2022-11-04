@@ -17,22 +17,23 @@ autolabeler:
     branch:
       - '/^feat[/-].+/'
     title:
-      - '/^feat[/-].+/'
+      - '/^feat:.+/'
   - label: fix
     branch:
       - '/^fix[/-].+/'
     title:
-      - '/^fix[/-].+/'
+      - '/^fix:.+/'
   - label: refactor
     branch:
       - '/^refactor[/-].+/'
     title:
-      - '/^refactor[/-].+/'
+      - '/^refactor:.+/'
   - label: chore
     branch:
       - '/^chore[/-].+/'
     title:
-      - '/^chore[/-].+/'
+      - '/^chore:.+/'
+      - '/^chore\(deps\):.+/'
 version-resolver:
   major:
     labels:
