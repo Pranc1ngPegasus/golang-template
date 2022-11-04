@@ -23,7 +23,7 @@ type Configuration struct {
 func NewConfiguration(
 	logger logger.Logger,
 ) (*Configuration, error) {
-	viper.SetConfigFile(".env")
+	viper.SetConfigFile("sample.env")
 	viper.AutomaticEnv()
 
 	if err := viper.ReadInConfig(); err != nil {
