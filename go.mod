@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/golang/mock v1.6.0
 	github.com/google/wire v0.5.0
-	github.com/samber/lo v1.33.0
+	github.com/samber/lo v1.34.0
 	github.com/spf13/viper v1.14.0
 	go.uber.org/zap v1.23.0
 	golang.org/x/tools v0.3.0
