@@ -8,7 +8,7 @@ require (
 	github.com/google/wire v0.5.0
 	github.com/samber/lo v1.34.0
 	github.com/spf13/viper v1.14.0
-	go.opencensus.io v0.23.0
+	go.opencensus.io v0.24.0
 	go.uber.org/zap v1.23.0
 	golang.org/x/tools v0.3.0
 	mvdan.cc/gofumpt v0.4.0
