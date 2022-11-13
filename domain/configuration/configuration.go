@@ -9,5 +9,7 @@ type Configuration interface {
 type (
 	Config struct {
 		Debug bool `mapstructure:"DEBUG"`
+
+		GCPProjectID string `mapstructure:"GCP_PROJECT_ID"`
 	}
 )
