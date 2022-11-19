@@ -1,6 +1,7 @@
 package configuration
 
 import (
+	"context"
 	"fmt"
 
 	domain "github.com/Pranc1ngPegasus/golang-template/domain/configuration"
@@ -23,11 +24,13 @@ type Configuration struct {
 func NewConfiguration(
 	logger logger.Logger,
 ) (*Configuration, error) {
+	ctx := context.Background()
+
 	viper.SetConfigFile("sample.env")
 	viper.AutomaticEnv()
 
 	if err := viper.ReadInConfig(); err != nil {
-		logger.Error("failed to load environment variable", err)
+		logger.Error(ctx, "failed to load environment variable", err)
 
 		return nil, fmt.Errorf("failed to load environment variable: %w", err)
 	}
@@ -35,7 +38,7 @@ func NewConfiguration(
 	var config domain.Config
 
 	if err := viper.Unmarshal(&config); err != nil {
-		logger.Error("failed to unmarshal environment variable", err)
+		logger.Error(ctx, "failed to unmarshal environment variable", err)
 
 		return nil, fmt.Errorf("failed to unmarshal environment variable: %w", err)
 	}

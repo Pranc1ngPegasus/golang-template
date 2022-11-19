@@ -1,14 +1,19 @@
 package tracer
 
 import (
+	"context"
 	"fmt"
 
-	"contrib.go.opencensus.io/exporter/stackdriver"
+	cloudtrace "github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/trace"
 	"github.com/Pranc1ngPegasus/golang-template/domain/configuration"
 	"github.com/Pranc1ngPegasus/golang-template/domain/logger"
 	domain "github.com/Pranc1ngPegasus/golang-template/domain/tracer"
 	"github.com/google/wire"
-	"go.opencensus.io/trace"
+	"go.opentelemetry.io/contrib/detectors/gcp"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/sdk/resource"
+	sdktrace "go.opentelemetry.io/otel/sdk/trace"
+	"go.uber.org/multierr"
 )
 
 var _ domain.Tracer = (*Tracer)(nil)
@@ -19,42 +24,56 @@ var NewTracerSet = wire.NewSet(
 )
 
 type Tracer struct {
-	exporter *stackdriver.Exporter
+	exporter *cloudtrace.Exporter
+	provider *sdktrace.TracerProvider
 }
 
 func NewTracer(
 	logger logger.Logger,
 	config configuration.Configuration,
 ) (*Tracer, error) {
-	exporter, err := stackdriver.NewExporter(stackdriver.Options{
-		ProjectID: config.Config().GCPProjectID,
-	})
+	cfg := config.Config()
+	ctx := context.Background()
+
+	exporter, err := cloudtrace.New(cloudtrace.WithProjectID(cfg.GCPProjectID))
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize exporter: %w", err)
 	}
 
-	trace.RegisterExporter(exporter)
-	trace.ApplyConfig(trace.Config{
-		DefaultSampler: trace.AlwaysSample(),
-	})
+	res, err := resource.New(ctx,
+		resource.WithDetectors(
+			gcp.NewDetector(),
+		),
+		resource.WithTelemetrySDK(),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to initialize resource: %w", err)
+	}
+
+	tp := sdktrace.NewTracerProvider(
+		sdktrace.WithBatcher(exporter),
+		sdktrace.WithResource(res),
+	)
+
+	otel.SetTracerProvider(tp)
 
 	return &Tracer{
 		exporter: exporter,
+		provider: tp,
 	}, nil
 }
 
-func (t *Tracer) Start() error {
-	if err := t.exporter.StartMetricsExporter(); err != nil {
-		return fmt.Errorf("failed to start metrics exporter: %w", err)
-	}
+func (t *Tracer) Stop() (err error) {
+	ctx := context.Background()
 
-	return nil
-}
-
-func (t *Tracer) Stop() error {
 	defer func() {
-		t.exporter.Flush()
-		t.exporter.StopMetricsExporter()
+		var merr error
+
+		multierr.AppendInto(&merr, t.exporter.Shutdown(ctx))
+		multierr.AppendInto(&merr, t.provider.ForceFlush(ctx))
+		multierr.AppendInto(&merr, t.provider.Shutdown(ctx))
+
+		err = merr
 	}()
 
 	return nil
