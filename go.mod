@@ -6,7 +6,7 @@ require (
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/trace v1.10.1
 	github.com/golang/mock v1.6.0
 	github.com/google/wire v0.5.0
-	github.com/samber/lo v1.34.0
+	github.com/samber/lo v1.35.0
 	github.com/spf13/viper v1.14.0
 	github.com/uptrace/opentelemetry-go-extra/otelzap v0.1.17
 	go.opentelemetry.io/contrib/detectors/gcp v1.11.1
