@@ -9,7 +9,7 @@ require (
 	github.com/samber/lo v1.36.0
 	github.com/spf13/viper v1.14.0
 	github.com/uptrace/opentelemetry-go-extra/otelzap v0.1.17
-	go.opentelemetry.io/contrib/detectors/gcp v1.11.1
+	go.opentelemetry.io/contrib/detectors/gcp v1.12.0
 	go.opentelemetry.io/otel v1.11.2
 	go.opentelemetry.io/otel/sdk v1.11.2
 	go.uber.org/multierr v1.8.0
@@ -20,9 +20,9 @@ require (
 
 require (
 	cloud.google.com/go/compute v1.12.1 // indirect
-	cloud.google.com/go/compute/metadata v0.2.1 // indirect
+	cloud.google.com/go/compute/metadata v0.2.2 // indirect
 	cloud.google.com/go/trace v1.2.0 // indirect
-	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v0.34.1 // indirect
+	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v0.34.2 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.34.2 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/go-logr/logr v1.2.3 // indirect
